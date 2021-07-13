@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center">
     <img alt="Vue logo" src="../assets/logo.png" class="w-48">
     <h1 class="text-2xl border-b border-gray-400 mb-4">Vue Composition API</h1>
-    <form @submit.prevent="login" class="flex flex-col w-64 m-auto">
+    <form @submit.prevent="loginHandler" class="flex flex-col w-64 m-auto">
       <label for="username">Username</label>
       <input type="text" v-model="username" id="username" class="p-1 shadow">
       <label for="password">Password</label>
@@ -25,10 +25,18 @@ export default defineComponent({
     }
   },
   methods: {
-    ...mapActions(['setUsername']),
-    login () {
-      this.setUsername(this.username)
-      this.$router.push('/')
+    ...mapActions(['login']),
+    loginHandler () {
+      this.login({
+        username: this.username,
+        password: this.password
+      })
+    }
+  },
+  mounted() {
+    if (localStorage.getItem('username')) {
+      this.username = localStorage.getItem('username')
+      this.loginHandler()
     }
   }
 })

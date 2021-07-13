@@ -1,8 +1,20 @@
 <template>
-  <div id="wrapper">
+  <Layout>
     <router-view/>
-  </div>
+  </Layout>
 </template>
+
+<script>
+import { defineComponent } from 'vue'
+import Layout from './components/Layout.vue'
+
+export default defineComponent({
+  name: 'App',
+  components: {
+    Layout
+  }
+})
+</script>
 
 <style lang="postcss">
 #app {
@@ -13,11 +25,5 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-}
-
-#wrapper {
-  @apply bg-gray-100;
-  width: 600px;
-  margin-top: 50px;
 }
 </style>

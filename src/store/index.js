@@ -13,6 +13,7 @@ export default createStore({
   mutations: {
     setUsername (state, username) {
       state.username = username
+      localStorage.setItem('username', username || '')
     },
     addTodo (state, todo) {
       state.todos.push(todo)
@@ -25,8 +26,11 @@ export default createStore({
     }
   },
   actions: {
-    setUsername ({ commit }, username) {
+    login ({ commit }, { username }) {
       commit('setUsername', username)
+    },
+    logout ({ commit }) {
+      commit('setUsername', null)
     },
     addTodo ({ commit }, task) {
       commit('addTodo', {
