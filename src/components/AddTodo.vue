@@ -12,24 +12,26 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import { mapActions } from "vuex";
+import { defineComponent, ref } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "AddTodo",
-  data() {
-    return {
-      newTodoText: "",
-    };
-  },
-  methods: {
-    ...mapActions(["addTodo"]),
-    addTodoHandler() {
-      if (!this.newTodoText.trim()) return;
+  setup() {
+    const store = useStore();
+    const newTodoText = ref('');
 
-      this.addTodo(this.newTodoText);
-      this.newTodoText = "";
-    },
-  },
+    function addTodoHandler() {
+      if (!newTodoText.value.trim()) return;
+
+      store.dispatch("addTodo", newTodoText.value);
+      newTodoText.value = "";
+    }
+
+    return {
+      newTodoText,
+      addTodoHandler
+    }
+  }
 });
 </script>
