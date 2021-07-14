@@ -20,7 +20,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import { useStore } from "vuex";
+import useTodo from "@/hooks/useTodo";
 
 export default defineComponent({
   name: "Todo",
@@ -34,18 +34,12 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
-    const store = useStore();
+  setup() {
+    const { toggleTodo, removeTodo } = useTodo();
 
     return {
-      toggleTodo: (index) => {
-        console.log(`Toggling todo ${props.todo.text}`);
-        store.dispatch("toggleTodo", index);
-      },
-      removeTodo: (index) => {
-        console.log(`Removing todo ${props.todo.text}`);
-        store.dispatch("removeTodo", index);
-      },
+      toggleTodo,
+      removeTodo
     };
   },
 });
