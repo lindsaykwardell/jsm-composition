@@ -19,23 +19,34 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import { mapActions } from 'vuex'
+import { defineComponent } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
-  name: 'Todo',
+  name: "Todo",
   props: {
     todo: {
       type: Object,
-      required: true
+      required: true,
     },
     index: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
-  methods: {
-    ...mapActions(['toggleTodo', 'removeTodo']),
-  }
-})
+  setup(props) {
+    const store = useStore();
+
+    return {
+      toggleTodo: (index) => {
+        console.log(`Toggling todo ${props.todo.text}`);
+        store.dispatch("toggleTodo", index);
+      },
+      removeTodo: (index) => {
+        console.log(`Removing todo ${props.todo.text}`);
+        store.dispatch("removeTodo", index);
+      },
+    };
+  },
+});
 </script>
