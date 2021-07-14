@@ -13,30 +13,32 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import { mapActions } from 'vuex'
+import { defineComponent, reactive, onMounted, toRefs } from 'vue'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'Login',
-  data () {
-    return {
+  setup() {
+    const state = useStore()
+    const loginState = reactive({
       username: '',
       password: ''
+    })
+
+    function loginHandler() {
+      state.dispatch('login', loginState)
     }
-  },
-  methods: {
-    ...mapActions(['login']),
-    loginHandler () {
-      this.login({
-        username: this.username,
-        password: this.password
-      })
-    }
-  },
-  mounted() {
-    if (localStorage.getItem('username')) {
-      this.username = localStorage.getItem('username')
-      this.loginHandler()
+
+    onMounted(() => {
+      if (localStorage.getItem('username')) {
+        loginState.username = localStorage.getItem('username')
+        loginHandler()
+      }
+    })
+
+    return {
+      ...toRefs(loginState),
+      loginHandler
     }
   }
 })
