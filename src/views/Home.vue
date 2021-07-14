@@ -33,37 +33,36 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import { mapGetters, mapActions } from "vuex";
+import { defineComponent, ref, computed } from "vue";
+import { useStore } from "vuex";
 import Todo from "../components/Todo.vue";
 import AddTodo from "../components/AddTodo.vue";
 
 export default defineComponent({
   name: "Home",
-  data() {
+  setup() {
+    const store = useStore();
+    const showCompleted = ref(false);
+
+    const todos = computed(() => store.getters.getTodos.filter(
+        (todo) => showCompleted.value || !todo.completed
+      ))
+    const todoCount = computed(() => store.getters.getTodos.length);
+    const completedTodoCount = computed(() => store.getters.getTodos.filter(
+        (todo) => todo.completed
+      ).length);
+
+    function logoutHandler() {
+      store.dispatch('logout');
+    }
+
     return {
-      showCompleted: false,
-    };
-  },
-  computed: {
-    ...mapGetters(["getTodos"]),
-    todos() {
-      return this.getTodos.filter(
-        (todo) => this.showCompleted || !todo.completed
-      );
-    },
-    todoCount() {
-      return this.getTodos.length;
-    },
-    completedTodoCount() {
-      return this.getTodos.filter((todo) => todo.completed).length;
-    },
-  },
-  methods: {
-    ...mapActions(["logout"]),
-    logoutHandler() {
-      this.logout();
-    },
+      showCompleted,
+      todos,
+      todoCount,
+      completedTodoCount,
+      logoutHandler
+    }
   },
   components: {
     Todo,
