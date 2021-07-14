@@ -5,23 +5,34 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import { mapGetters } from 'vuex'
+import { computed, defineComponent, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'Layout',
-  computed: mapGetters([
-    'isLoggedIn'
-  ]),
-  watch: {
-    isLoggedIn () {
-      if (this.isLoggedIn) {
-        this.$router.push('/')
+  setup() {
+    const store = useStore()
+    const router = useRouter()
+
+    const isLoggedIn = computed(() => store.getters.isLoggedIn);
+
+    watch(isLoggedIn, (isLoggedIn) => {
+      if (isLoggedIn) {
+        router.push('/')
       } else {
-        this.$router.push('/login')
+        router.push('/login')
       }
-    }
-  },
+    })
+
+    // watchEffect(() => {
+    //   if (store.getters.isLoggedIn) {
+    //     router.push('/')
+    //   } else {
+    //     router.push('/login')
+    //   }
+    // })
+  }
 })
 </script>
 
