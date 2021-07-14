@@ -33,27 +33,20 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "vue";
-import { useStore } from "vuex";
+import { defineComponent } from "vue";
+import useTodo from "@/hooks/useTodo";
 import Todo from "../components/Todo.vue";
 import AddTodo from "../components/AddTodo.vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "Home",
   setup() {
     const store = useStore();
-    const showCompleted = ref(false);
-
-    const todos = computed(() => store.getters.getTodos.filter(
-        (todo) => showCompleted.value || !todo.completed
-      ))
-    const todoCount = computed(() => store.getters.getTodos.length);
-    const completedTodoCount = computed(() => store.getters.getTodos.filter(
-        (todo) => todo.completed
-      ).length);
+    const { showCompleted, todos, todoCount, completedTodoCount } = useTodo();
 
     function logoutHandler() {
-      store.dispatch('logout');
+      store.dispatch("logout");
     }
 
     return {
@@ -61,8 +54,8 @@ export default defineComponent({
       todos,
       todoCount,
       completedTodoCount,
-      logoutHandler
-    }
+      logoutHandler,
+    };
   },
   components: {
     Todo,

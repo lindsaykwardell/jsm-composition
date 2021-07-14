@@ -12,21 +12,13 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
-import { useStore } from "vuex";
+import { defineComponent } from "vue";
+import useTodo from '@/hooks/useTodo'
 
 export default defineComponent({
   name: "AddTodo",
   setup() {
-    const store = useStore();
-    const newTodoText = ref('');
-
-    function addTodoHandler() {
-      if (!newTodoText.value.trim()) return;
-
-      store.dispatch("addTodo", newTodoText.value);
-      newTodoText.value = "";
-    }
+    const { newTodoText, addTodoHandler } = useTodo();
 
     return {
       newTodoText,
