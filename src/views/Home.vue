@@ -42,7 +42,6 @@ export default defineComponent({
   name: "Home",
   data() {
     return {
-      newTodoText: "",
       showCompleted: false,
     };
   },
@@ -62,12 +61,6 @@ export default defineComponent({
   },
   methods: {
     ...mapActions(["logout"]),
-    addTodoHandler() {
-      if (!this.newTodoText.trim().length) return;
-
-      this.addTodo(this.newTodoText);
-      this.newTodoText = "";
-    },
     logoutHandler() {
       this.logout();
     },
